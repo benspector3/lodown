@@ -21,7 +21,7 @@
      *      }
      *      each(arr, multiplyeBy5);    //-> 5, 10, 15, 20, 25
      */
-    function each(collection, action) {
+    _.each = function(collection, action) {
         if (Array.isArray(collection)) {
             for (var i = 0; i < collection.length; i++) {
                 action(collection[i], i, collection);
@@ -33,7 +33,6 @@
             }
         }
     }
-    _.each = each;
     
     /**
      * identity: Designed to accept any value and return that value, unchanged.
@@ -48,10 +47,9 @@
      *      console.log(identity(a)); //-> 5
      */
     
-    function identity(value) {
+    _.identity = function(value) {
         return value;
     }
-    _.identity = identity;
     
     /**
      * typeOf: Designed to accept any value and return the type of that value.
@@ -74,7 +72,7 @@
      *      console.log(typeOf(true)); //-> "boolean"
      *      console.log(typeOf([1,"2", false)); //-> "array"
      */
-    function typeOf(value) {
+    _.typeOf = function(value) {
         if (Array.isArray(value)) {
             return 'array';
         }
@@ -85,7 +83,6 @@
             return typeof value;
         }
     }
-    _.typeOf = typeOf;
     
     /**
      * first: Designed to return the first x elements from an array. 
@@ -103,7 +100,7 @@
      *      console.log(first(arr));    //-> ['hi']
      *      console.log(first());       //-> []
      */
-    function first(array, num) {
+    _.first = function(array, num) {
         if (!Array.isArray(array)) {
             return [];
         }
@@ -119,7 +116,6 @@
         }
         return toReturn;
     }
-    _.first = first;
     
     /**
      * last: Designed to return the last x elements from an array. 
@@ -137,7 +133,7 @@
      *      console.log(last(arr));    //-> ['ben']
      *      console.log(last());       //-> []
      */
-    function last(array, num) {
+    _.last = function(array, num) {
         if (!Array.isArray(array)) {
             return [];
         }
@@ -152,7 +148,6 @@
         }
         return toReturn;
     }
-    _.last = last;
     
     /**
      * indexOf: Designed to return the index of an element in an array.
@@ -169,7 +164,7 @@
      *      console.log(indexOf(arr, true));    //-> 3;
      *      console.log(indexOf(arr, 'yo'));    //-> -1;
      */
-    function indexOf(array, value) {
+    _.indexOf = function(array, value) {
         for (var i = 0; i < array.length; i++) {
             if (array[i] === value) {
                 return i;
@@ -177,7 +172,6 @@
         }
         return -1;
     }
-    _.indexOf = indexOf;
     
     
     
@@ -204,16 +198,15 @@
      *      });
      *      console.log(onlyBs); // -> ['b', 'b']
      */
-    function filter(array, test) {
+    _.filter = function(array, test) {
         var toReturn = [];
-        each(array, function(element, index, array) {
+        _.each(array, function(element, index, array) {
             if (test(element, index, array)) {
                 toReturn.push(element);
             }
         });
         return toReturn;
     }
-    _.filter = filter;
     
     /**
      * filter: Designed to filter values in a collection based on a test. 
@@ -238,12 +231,11 @@
      *      });
      *      console.log(onlyBs); // -> ['a', 'c']
      */
-    function reject(array, test) {
-        return filter(array, function(element, index, array) {
+    _.reject = function(array, test) {
+        return _.filter(array, function(element, index, array) {
             return !(test(element, index, array))
         });
     }
-    _.reject = reject;
     
     /**
      * partition: Designed to filter an array based on a test and return two arrays;
@@ -272,13 +264,12 @@
      *      var evens = results[0];     //-> [2,4,6,8]
      *      var odds = results[1];      //-> [1,3,5,7]
      */
-    function partition(array, test) {
-        var rejected = reject(array, test);
-        var filtered = filter(array, test);
+    _.partition = function(array, test) {
+        var rejected = _.reject(array, test);
+        var filtered = _.filter(array, test);
     
         return [filtered, rejected];
     }
-    _.partition = partition;
     
     /**
      * unique: Designed to accept an array and return the same array without duplicates.
@@ -292,16 +283,15 @@
      *      const arr = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5];
      *      const uniqueArr = unique(arr);      //-> [1, 2, 3, 4, 5]
      */
-    function unique(array) {
+    _.unique = function(array) {
         var toReturn = [];
-        each(array, function(e, i, array) {
+        _.each(array, function(e, i, array) {
             if (toReturn.indexOf(array[i]) === -1) {
                 toReturn.push(array[i]);
             }
         })
         return toReturn;
     }
-    _.unique = unique;
     
     /**
      * map: Designed to loop over a collection, Array or Object, apply a function
@@ -329,14 +319,13 @@
      *      
      *      var result = map(arr, makeUpperCase);    //-> {name: "BEN", employer: "OPERATION SPARK", title "INSTRUCTOR"};
      */
-    function map(collection, func) {
+    _.map = function(collection, func) {
         var toReturn = [];
-        each(collection, function(item, loc, collection) {
+        _.each(collection, function(item, loc, collection) {
             toReturn.push(func(item, loc, collection));
         });
         return toReturn;
     }
-    _.map = map;
     
     /**
      * pluck: Designed to loop over an array of objects and, for each object, pull 
@@ -356,12 +345,12 @@
      *      var firstNames = pluck(arr, "nameFirst");   //-> ["Ben", "Aaron"]
      * 
      */
-    function pluck(array, property) {
-        return map(array, function(element, i, array) {
+    _.pluck = function(array, property) {
+        return _.map(array, function(element, i, array) {
             return element[property];
         })
     }
-    _.pluck = pluck;
+    
     
     /** 
      * contains: Designed to return true if an array contains a value, false otherwise
@@ -377,10 +366,9 @@
      *      contains(arr, 3);   //-> true
      *      contains(arr, 8);   //-> false
      */
-    function contains(array, value) {
-        return indexOf(array, value) === -1 ? false : true;
+    _.contains = function(array, value) {
+        return _.indexOf(array, value) === -1 ? false : true;
     }
-    _.contains = contains;
     
     /**
      * every: Designed to loop through a collection, Array or Object, and return 
@@ -404,21 +392,20 @@
      *      every (arr, function(e){return e > 5})  //-> false
      *      every (arr, function(e){return e <= 5})  //-> true
      */
-    function every(collection, test) {
+    _.every = function(collection, test) {
         var result = true;
-        if (typeOf(test) !== 'function') {
-            each(collection, function(item, loc, collection) {
+        if (_.typeOf(test) !== 'function') {
+            _.each(collection, function(item, loc, collection) {
                 if (!item) result = false;
             })
         }
         else {
-            each(collection, function(item, loc, collection) {
+            _.each(collection, function(item, loc, collection) {
                 if (!test(item, loc, collection)) result = false;
             });
         }
         return result;
     }
-    _.every = every;
     
     /**
      * every: Designed to loop through a collection, Array or Object, and return 
@@ -442,21 +429,20 @@
      *      some (arr, function(e){return e > 5})  //-> false
      *      some (arr, function(e){return e < 3})  //-> true
      */
-    function some(collection, func) {
+    _.some = function(collection, func) {
         var result = false;
-        if (typeOf(func) !== 'function') {
-            each(collection, function(item, loc, collection) {
+        if (_.typeOf(func) !== 'function') {
+            _.each(collection, function(item, loc, collection) {
                 if (item) result = true;
             })
         }
         else {
-            each(collection, function(item, loc, collection) {
+            _.each(collection, function(item, loc, collection) {
                 if (func(item, loc, collection)) result = true;
             });
         }
         return result;
     }
-    _.some = some;
     
     /**
      * reduce: Designed to loop over an array and call a function on every element passing
@@ -476,29 +462,13 @@
      * 
      *      reduce([1,2,3], function(previousSum, currentValue, currentIndex){ return previousSum + currentValue }, 0) -> 6
      */
-    function reduce(array, func, seed) {
+    _.reduce = function(array, func, seed) {
         var result = seed;
-        each(array, function(element, index, array) {
+        _.each(array, function(element, index, array) {
             result = (result != undefined) ? func(result, element, index) : array[0];
         })
         return result;
     }
-    _.reduce = reduce;
-    
-    /** _.extend()
-     * Arguments:
-     *   1) An Object
-     *   2) An Object
-     *   ...Possibly more objects
-     * Objectives:
-     *   1) Copy properties from <object 2> to <object 1>
-     *   2) If more objects are passed in, copy their properties to <object 1> as well, in the order they are passed in.
-     *   3) Return the update <object 1>
-     * Examples:
-     *   var data = {a:"one"};
-     *   _.extend(data, {b:"two"}); -> data now equals {a:"one",b:"two"}
-     *   _.extend(data, {a:"two"}); -> data now equals {a:"two"}
-     */
     
     /**
      * extend: Designed to copy the properties from one or more objects into another object.
@@ -514,15 +484,14 @@
      *   extend(data, {b:"two"}); -> data now equals {a:"one",b:"two"}
      *   extend(data, {a:"two"}); -> data now equals {a:"two"}
      */
-    function extend(object1, ...objects) {
-        each(objects, function(object, key, objects) {
+    _.extend = function(object1, ...objects) {
+        _.each(objects, function(object, key, objects) {
             for (var key in object) {
                 object1[key] = object[key];
             }
         });
         return object1;
     }
-    _.extend = extend;
 
     
     // ....
